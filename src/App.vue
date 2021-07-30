@@ -11,37 +11,35 @@ import netlifyIdentity from "netlify-identity-widget";
 export default {
   name: "App",
   methods: {
-    methods: {
-      setUserRole(role) {
-        // // call this when you're already logged in as yourself
-        const admin = netlifyIdentity.currentUser();
-        console.log("inside setUserRole");
-        console.log("current user", admin);
+    setUserRole(role) {
+      // // call this when you're already logged in as yourself
+      const admin = netlifyIdentity.currentUser();
+      console.log("inside setUserRole");
+      console.log("current user", admin);
 
-        fetch("/.netlify/functions/updateRole/", {
-          method: "post",
-          body: JSON.stringify({
-            email: "testinguser@mailinator.com", // dynamically fill these values as needed
-            role: role,
-          }),
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${admin.token.access_token}`,
-          },
+      fetch("/.netlify/functions/updateRole/", {
+        method: "post",
+        body: JSON.stringify({
+          email: "testinguser@mailinator.com", // dynamically fill these values as needed
+          role: role,
+        }),
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${admin.token.access_token}`,
+        },
+      })
+        .then((response) => {
+          console.log("fetcheddd");
+          console.log(response);
+          return response.json();
         })
-          .then((response) => {
-            console.log("fetcheddd");
-            console.log(response);
-            return response.json();
-          })
-          .then((updatedUser) => {
-            // updatedUser is the user with new role(s)
-            console.log(updatedUser);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      },
+        .then((updatedUser) => {
+          // updatedUser is the user with new role(s)
+          console.log(updatedUser);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     },
   },
 };
