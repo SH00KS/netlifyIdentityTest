@@ -1,7 +1,15 @@
 <template>
   <div>
-    <button v-on:click="setUserRole('free')">Set user to Free</button>
-    <button v-on:click="setUserRole('Premium')">Set user to Premium</button>
+    <div data-netlify-identity-menu></div>
+
+    <div>
+      <div style="margin-bottom: 25px">
+        Log in / sign up then use the following buttons to change the role of
+        testinguser@mailinator.com
+      </div>
+      <button v-on:click="setUserRole('free')">Set user to Free</button>
+      <button v-on:click="setUserRole('Premium')">Set user to Premium</button>
+    </div>
   </div>
 </template>
 
@@ -10,6 +18,12 @@ import netlifyIdentity from "netlify-identity-widget";
 
 export default {
   name: "App",
+  data: () => ({
+    loggedIn: false,
+  }),
+  mounted() {
+    netlifyIdentity.init();
+  },
   methods: {
     setUserRole(role) {
       // // call this when you're already logged in as yourself
